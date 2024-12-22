@@ -50,6 +50,22 @@ async def create_user(user: User):
     db.append(user)
     return {"id": user.id}
 
+@app.put("/api/users/{user_id}")
+async def update_user(user_id: UUID, user: User):
+    for index, user in enumerate(db):
+        if user.id == user_id:
+            db[index] = user
+            return {"message": "User updated"}
+    return {"message": "User not found"}
+
+@app.delete("/api/users/{user_id}")
+async def delete_user(user_id: UUID):
+    for index, user in enumerate(db):
+        if user.id == user_id:
+            db.pop(index)
+            return {"message": "User deleted"}
+    return {"message": "User not found"}
+
 @app.get("/")
 def root():
     return {"Hello": "Kib"}
